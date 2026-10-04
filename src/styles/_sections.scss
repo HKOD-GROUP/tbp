@@ -8,6 +8,14 @@
   border-top: 1px solid var(--line);
 }
 
+// Première section d'une page sans hero plein écran (à propos, contact,
+// boutique, listes, légal…) : la nav reste fixe par-dessus le contenu, donc
+// il faut dégager sa hauteur explicitement — le padding-top normal de
+// `.section` seul ne suffit plus sur mobile depuis qu'il a été resserré.
+.section--top {
+  padding-top: calc(var(--nav-h) + clamp(24px, 4vw, 48px));
+}
+
 .sec-head {
   display: flex;
   align-items: flex-end;
