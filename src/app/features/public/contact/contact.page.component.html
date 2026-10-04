@@ -1,0 +1,61 @@
+<section class="section wrap wrap--text">
+  <p class="eyebrow">Contact</p>
+  <h1 class="h1" style="margin-bottom: 40px">Parlons-en.</h1>
+  @if (status === 'sent') {
+    <tbp-alert variant="ok" title="Message envoyé">
+      Merci, nous reviendrons vers toi rapidement.
+    </tbp-alert>
+  } @else {
+    <form class="form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      @if (status === 'error') {
+        <tbp-alert variant="error" title="Échec de l'envoi">
+          Une erreur est survenue, réessaie dans quelques instants.
+        </tbp-alert>
+      }
+
+      <div class="form-row">
+        <tbp-field label="Nom" formControlName="name" [errorMessage]="errorFor('name')" />
+        <tbp-field
+          label="E-mail"
+          type="email"
+          formControlName="email"
+          [errorMessage]="errorFor('email')"
+        />
+      </div>
+
+      <tbp-select
+        label="Objet"
+        formControlName="subject"
+        [options]="subjectOptions"
+        placeholder="Choisir un objet"
+        [errorMessage]="errorFor('subject')"
+      />
+
+      <tbp-textarea
+        label="Message"
+        formControlName="message"
+        [errorMessage]="errorFor('message')"
+      />
+
+      <tbp-checkbox formControlName="consent">
+        J'accepte la
+        <a routerLink="/confidentialite">politique de confidentialité</a>
+      </tbp-checkbox>
+      @if (errorFor('consent')) {
+        <p class="field__help field__help--error">{{ errorFor('consent') }}</p>
+      }
+
+      <!-- Champ piège anti-spam, invisible pour les humains -->
+      <div style="position: absolute; left: -9999px" aria-hidden="true">
+        <label>
+          Site web
+          <input type="text" formControlName="website" tabindex="-1" autocomplete="off" />
+        </label>
+      </div>
+
+      <tbp-button type="submit" variant="primary" [loading]="status === 'sending'">
+        Envoyer
+      </tbp-button>
+    </form>
+  }
+</section>

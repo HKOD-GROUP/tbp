@@ -1,0 +1,88 @@
+@if (event(); as e) {
+  <section class="poster">
+    <div class="poster__bg media">
+      <img class="photo" [ngSrc]="e.posterUrl" [alt]="e.title" fill priority />
+    </div>
+    <div class="wrap poster__in">
+      <div class="poster__row">
+        <div class="poster__copy">
+          <p class="eyebrow">{{ e.city }}</p>
+          <h1 class="display">{{ e.title }}</h1>
+        </div>
+        <div style="display: grid; gap: 20px">
+          <tbp-countdown [target]="e.date" />
+          <div class="actions">
+            @if (e.ticketUrl) {
+              <tbp-button variant="primary" [href]="e.ticketUrl" target="_blank" rel="noopener">
+                Billetterie
+              </tbp-button>
+            }
+            <tbp-button variant="glass" [icon]="false" (click)="addToCalendar()">
+              Ajouter à mon agenda
+            </tbp-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <tbp-subnav
+    [title]="e.title"
+    [links]="[
+      { href: '#ev-combats', label: 'Combats' },
+      { href: '#ev-infos', label: 'Infos' },
+      { href: '#ev-galerie', label: 'Galerie' },
+    ]"
+    [actionLabel]="e.ticketUrl ? 'Billets' : undefined"
+    [actionHref]="e.ticketUrl"
+  />
+
+  @if (e.fightCard?.length) {
+    <section class="section section--line wrap" id="ev-combats">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Carte des combats</p>
+          <h2 class="h2">Les affiches de la soirée</h2>
+        </div>
+      </div>
+      <tbp-fight-card [fights]="e.fightCard ?? []" />
+    </section>
+  }
+
+  <section class="section section--line wrap" id="ev-infos">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Infos pratiques</p>
+        <h2 class="h2">Fiche technique</h2>
+      </div>
+    </div>
+    <tbp-specs [rows]="specs()" />
+    @if (e.description) {
+      <div class="wrap--text small" style="margin-top: 32px" [innerHTML]="e.description"></div>
+    }
+  </section>
+
+  @if (galleryImages().length > 0) {
+    <section class="section section--line wrap" id="ev-galerie">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Galerie</p>
+          <h2 class="h2">Les photos du gala</h2>
+        </div>
+      </div>
+      <div class="gallery">
+        @for (image of galleryImages(); track image.src; let i = $index) {
+          <button type="button" class="media" (click)="openLightbox(i)">
+            <img class="photo" [ngSrc]="image.src" [alt]="image.alt" fill />
+          </button>
+        }
+      </div>
+      <tbp-lightbox
+        [images]="galleryImages()"
+        [index]="lightboxIndex()"
+        (closed)="closeLightbox()"
+        (indexChanged)="lightboxIndex.set($event)"
+      />
+    </section>
+  }
+}

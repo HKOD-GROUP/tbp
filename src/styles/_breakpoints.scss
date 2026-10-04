@@ -1,0 +1,22 @@
+// Points de rupture du DS (section 13) : 1180, 1060, 860 et 640 px.
+@mixin bp($name) {
+  @if $name == xl {
+    @media (max-width: 1180px) {
+      @content;
+    }
+  } @else if $name == lg {
+    @media (max-width: 1060px) {
+      @content;
+    }
+  } @else if $name == md {
+    @media (max-width: 860px) {
+      @content;
+    }
+  } @else if $name == sm {
+    @media (max-width: 640px) {
+      @content;
+    }
+  } @else {
+    @error "Point de rupture inconnu : #{$name} (attendu xl, lg, md ou sm)";
+  }
+}

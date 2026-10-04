@@ -1,0 +1,160 @@
+<div class="adm-head">
+  <div>
+    <p class="label">Contenu</p>
+    <h1 class="h2">Galas</h1>
+  </div>
+  <tbp-button variant="primary" (click)="openCreate()">Nouveau gala</tbp-button>
+</div>
+
+<div class="kpis">
+  <div class="kpi"><b>{{ kpis().upcoming }}</b><span>À venir</span></div>
+  <div class="kpi"><b>{{ kpis().past }}</b><span>Passés</span></div>
+  <div class="kpi"><b>{{ eventsService.all().length }}</b><span>Au total</span></div>
+</div>
+
+<div class="toolbar">
+  <label class="search">
+    <svg><use href="#i-search" /></svg>
+    <input
+      type="search"
+      placeholder="Rechercher un gala"
+      aria-label="Rechercher un gala"
+      [value]="search()"
+      (input)="search.set($any($event.target).value)"
+    />
+  </label>
+  <tbp-tabs [tabs]="statusTabs" [activeId]="statusFilter()" (selected)="statusFilter.set($any($event))" />
+</div>
+
+<div class="items">
+  @for (row of filtered(); track row.event.id) {
+    <article class="item">
+      <div class="media item__img">
+        <img [src]="row.event.posterUrl" [alt]="row.event.title" style="width: 100%; height: 100%; object-fit: cover" />
+      </div>
+      <div class="item__body">
+        <span class="item__title">{{ row.event.title }}</span>
+        <span class="item__meta">
+          {{ row.event.date | date: 'EEE d MMM y' }} · {{ row.event.date | date: 'HH:mm' }} · {{ row.event.city }}
+        </span>
+      </div>
+      <div class="item__side">
+        <tbp-badge [variant]="row.status === 'upcoming' ? 'amber' : 'muted'">
+          {{ row.status === 'upcoming' ? 'À venir' : 'Passé' }}
+        </tbp-badge>
+        <div style="display: flex; gap: 6px">
+          <tbp-icon-button name="edit" size="sm" ariaLabel="Modifier" (click)="openEdit(row.event)" />
+          <tbp-icon-button name="trash" size="sm" [danger]="true" ariaLabel="Supprimer" (click)="askDelete(row.event)" />
+        </div>
+      </div>
+    </article>
+  } @empty {
+    <p class="small" style="padding: 24px 0; color: var(--muted)">Aucun gala pour l'instant.</p>
+  }
+</div>
+
+<button type="button" class="sheet-veil" [class.is-on]="sheetOpen()" aria-label="Fermer" (click)="closeSheet()"></button>
+<aside class="sheet" [class.is-on]="sheetOpen()" aria-label="Édition d'un gala">
+  <div class="sheet__head">
+    <h3>{{ editingId() ? titleCtrl() : 'Nouveau gala' }}</h3>
+    <tbp-icon-button name="close" size="sm" ariaLabel="Fermer" (click)="closeSheet()" />
+  </div>
+  <div class="sheet__body">
+    <div class="group">
+      <span class="group__title">Informations</span>
+      <span class="group__desc">Ce qui s'affiche sur le site.</span>
+      <tbp-field label="Titre *" [ngModel]="titleCtrl()" (ngModelChange)="titleCtrl.set($event)" />
+      <div class="form-row">
+        <tbp-field label="Date *" type="date" [ngModel]="dateCtrl()" (ngModelChange)="dateCtrl.set($event)" />
+        <tbp-field label="Ouverture *" type="time" [ngModel]="timeCtrl()" (ngModelChange)="timeCtrl.set($event)" />
+      </div>
+      <div class="form-row">
+        <tbp-field label="Lieu *" [ngModel]="venueCtrl()" (ngModelChange)="venueCtrl.set($event)" />
+        <tbp-field label="Ville *" [ngModel]="cityCtrl()" (ngModelChange)="cityCtrl.set($event)" />
+      </div>
+      <tbp-field label="Adresse complète" [ngModel]="addressCtrl()" (ngModelChange)="addressCtrl.set($event)" />
+      <div>
+        <tbp-field
+          label="Lien de la billetterie"
+          type="url"
+          placeholder="https://"
+          [ngModel]="ticketUrlCtrl()"
+          (ngModelChange)="ticketUrlCtrl.set($event)"
+        />
+        <p class="field__help">Laisse vide s'il n'y a pas encore de billetterie : le bouton Réserver sera masqué.</p>
+      </div>
+    </div>
+
+    <div class="group">
+      <span class="group__title">Affiche</span>
+      <span class="group__desc">Format portrait 3:4, 5 Mo maximum. Convertie en WebP automatiquement.</span>
+      <tbp-dropzone [previews]="posterPreviews()" (filesAdded)="onPosterAdded($event)" (removed)="removePoster()" />
+      @if (posterUploading()) {
+        <p class="small">Envoi en cours…</p>
+      }
+    </div>
+
+    <div class="group">
+      <span class="group__title">Description</span>
+      <tbp-rich-text [ngModel]="descriptionCtrl()" (ngModelChange)="descriptionCtrl.set($event)" />
+    </div>
+
+    <div class="group">
+      <span class="group__title">Carte des combats</span>
+      <span class="group__desc">Facultatif. Le premier combat est le combat principal.</span>
+      @for (fight of fightCard(); track $index) {
+        <div class="fight-row">
+          <label class="field">
+            <input class="field__input" [value]="fight.red" (input)="updateFight($index, 'red', $any($event.target).value)" />
+            <span class="field__label">Coin rouge</span>
+          </label>
+          <label class="field">
+            <input class="field__input" [value]="fight.blue" (input)="updateFight($index, 'blue', $any($event.target).value)" />
+            <span class="field__label">Coin bleu</span>
+          </label>
+          <label class="field field--cat">
+            <input class="field__input" [value]="fight.category" (input)="updateFight($index, 'category', $any($event.target).value)" />
+            <span class="field__label">Catégorie</span>
+          </label>
+          <tbp-icon-button name="trash" size="sm" [danger]="true" ariaLabel="Retirer ce combat" (click)="removeFight($index)" />
+        </div>
+      }
+      <tbp-button variant="outline" size="sm" [icon]="false" (click)="addFight()">+ Ajouter un combat</tbp-button>
+    </div>
+
+    <div class="group">
+      <span class="group__title">Galerie</span>
+      <span class="group__desc">Pour les galas passés. Plusieurs photos à la fois.</span>
+      <tbp-dropzone
+        [previews]="galleryPreviews()"
+        [multiple]="true"
+        (filesAdded)="onGalleryAdded($event)"
+        (removed)="removeGalleryPhoto($event)"
+      />
+      @if (galleryUploading()) {
+        <p class="small">Envoi en cours…</p>
+      }
+    </div>
+
+    <div class="group">
+      <tbp-switch
+        label="Publié sur le site"
+        description="Décoche pour garder en brouillon"
+        [ngModel]="publishedCtrl()"
+        (ngModelChange)="publishedCtrl.set($event)"
+      />
+    </div>
+  </div>
+  <div class="sheet__foot">
+    <tbp-button variant="outline" [icon]="false" (click)="closeSheet()">Annuler</tbp-button>
+    <tbp-button variant="primary" [loading]="saving()" (click)="save()">Enregistrer</tbp-button>
+  </div>
+</aside>
+
+<tbp-confirm-dialog
+  [open]="!!deleteTarget()"
+  title="Supprimer ?"
+  [description]="'Le gala « ' + (deleteTarget()?.title ?? '') + ' » sera définitivement supprimé.'"
+  (confirmed)="confirmDelete()"
+  (cancelled)="deleteTarget.set(null)"
+/>

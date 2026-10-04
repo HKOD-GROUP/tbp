@@ -1,0 +1,166 @@
+// Police Archivo variable (largeur 62 à 125 %, graisse 100 à 900), auto-hébergée.
+@font-face {
+  font-family: 'TBP Archivo';
+  src: url('/assets/fonts/archivo-variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+// Échelle typographique : grotesque condensé TBP sur tous les échelons,
+// casse et poids modérés (esprit lockir) plutôt que les majuscules criées.
+.display,
+.h1,
+.h2 {
+  font-family: var(--sans);
+  font-weight: 750;
+  font-stretch: 82%;
+  letter-spacing: -0.01em;
+}
+
+.display {
+  font-size: clamp(40px, 5.6vw, 84px);
+  line-height: 1.04;
+}
+
+.h1 {
+  font-size: clamp(32px, 4.2vw, 56px);
+  line-height: 1.08;
+}
+
+.h2 {
+  font-size: clamp(26px, 2.8vw, 38px);
+  line-height: 1.14;
+}
+
+.h3 {
+  font-family: var(--sans);
+  font-stretch: 90%;
+  font-weight: 640;
+  font-size: clamp(20px, 1.8vw, 26px);
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+}
+
+.h4 {
+  font-size: clamp(18px, 1.4vw, 21px);
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.wide {
+  font-stretch: 125%;
+}
+
+.it,
+.red {
+  color: var(--red);
+  font-style: normal;
+}
+
+.it--paper {
+  color: var(--paper);
+}
+
+.label {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 650;
+  font-stretch: 125%;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.label--amber,
+.label--red {
+  color: var(--red);
+}
+
+// Pastille d'accroche (titre de section, en-tête de page).
+.eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px 7px 11px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 650;
+  font-stretch: 125%;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.eyebrow::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+.lead {
+  font-size: clamp(17px, 1.4vw, 20px);
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 46ch;
+}
+
+// Paragraphe d'ouverture : porte le propos, pas juste un sous-titre discret.
+.statement {
+  font-family: var(--sans);
+  font-weight: 540;
+  font-stretch: 92%;
+  font-size: clamp(21px, 2vw, 28px);
+  line-height: 1.45;
+  color: var(--paper);
+  max-width: 62ch;
+}
+
+.small {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.dim {
+  color: var(--dim);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+// Mot géant derrière les sujets (prénom de Chadi, etc.).
+.giant {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  text-align: center;
+  font: 900 clamp(110px, 24vw, 420px) / 0.78 var(--sans);
+  font-stretch: 125%;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--red);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+.giant--ghost {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.14);
+}

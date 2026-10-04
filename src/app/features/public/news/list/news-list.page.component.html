@@ -1,0 +1,43 @@
+<section class="section wrap">
+  <p class="eyebrow">Actualités</p>
+  <h1 class="h1">News</h1>
+
+  @if (news.featured(); as featured) {
+    <a class="card" [routerLink]="'/news/' + featured.slug" style="margin: 32px 0">
+      <div class="media r-21x9">
+        <img class="photo" [ngSrc]="featured.coverUrl" [alt]="featured.title" fill priority />
+      </div>
+      <div class="card__meta">
+        <span class="it">{{ featured.publishedAt | date: 'dd.MM.yyyy' }}</span>
+      </div>
+      <span class="card__title">{{ featured.title }}</span>
+      <p class="small">{{ featured.excerpt }}</p>
+    </a>
+  } @else if (!news.loading()) {
+    <div class="empty" style="margin-top: 32px">
+      <p class="h3">Pas encore d'actualité publiée.</p>
+    </div>
+  }
+
+  @if (visibleRows().length > 0) {
+    <div class="grid grid--3" style="margin-top: 40px">
+      @for (article of visibleRows(); track article.slug) {
+        <tbp-news-card
+          [href]="'/news/' + article.slug"
+          [image]="article.coverUrl"
+          [date]="article.formattedDate"
+          [title]="article.title"
+          [excerpt]="article.excerpt"
+        />
+      }
+    </div>
+
+    @if (news.hasMore()) {
+      <div class="actions" style="justify-content: center; margin-top: 40px">
+        <tbp-button variant="outline" [icon]="false" (click)="news.loadMore()">
+          Charger plus d'articles
+        </tbp-button>
+      </div>
+    }
+  }
+</section>

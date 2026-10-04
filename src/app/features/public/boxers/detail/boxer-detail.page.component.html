@@ -1,0 +1,74 @@
+@if (boxer; as b) {
+  <tbp-poster
+    variant="fighter"
+    [backgroundImage]="b.images.ring"
+    [backgroundAlt]="b.fullName + ' dans le ring'"
+    [giantWord]="b.firstName"
+    [giantGhost]="true"
+    [figureImage]="b.images.cutout2"
+    [figureAlt]="b.fullName"
+  >
+    <div tbpPosterCopy>
+      <p class="label">{{ b.nickname }}</p>
+      <h1 class="h1">{{ b.fullName }}</h1>
+      <a class="link" [href]="b.instagramUrl" target="_blank" rel="noopener">{{
+        b.instagramHandle
+      }}</a>
+    </div>
+  </tbp-poster>
+
+  <tbp-subnav
+    [title]="b.fullName"
+    [links]="[
+      { href: '#chiffres', label: 'Chiffres clés' },
+      { href: '#fiche', label: 'Fiche technique' },
+      { href: '#parcours', label: 'Parcours' },
+    ]"
+  />
+
+  <section class="section wrap" id="chiffres">
+    <tbp-stats [items]="stats" />
+  </section>
+
+  <section class="band">
+    <div class="media">
+      <img class="photo" [ngSrc]="b.images.action" [alt]="b.fullName + ' en action'" fill />
+    </div>
+    <div class="wrap band__in">
+      <div class="band__copy">
+        <p class="eyebrow">En action</p>
+        <h2 class="h2">Sur le ring</h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--line wrap" id="fiche">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Fiche technique</p>
+        <h2 class="h2">En chiffres</h2>
+      </div>
+    </div>
+    <tbp-specs [rows]="specs" />
+  </section>
+
+  <section class="section section--line wrap" id="parcours">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Parcours</p>
+        <h2 class="h2">Le chemin parcouru</h2>
+      </div>
+    </div>
+    <tbp-timeline [items]="b.timeline" />
+  </section>
+
+  <section class="section section--line wrap">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Galerie</p>
+        <h2 class="h2">Dans le ring</h2>
+      </div>
+    </div>
+    <tbp-mosaic [images]="mosaicImages" />
+  </section>
+}

@@ -1,0 +1,35 @@
+<div
+  class="menu"
+  [class.is-open]="menu.isOpen()"
+  [attr.aria-hidden]="menu.isOpen() ? null : 'true'"
+  #panel
+  tabindex="-1"
+>
+  <nav class="menu__links" aria-label="Menu">
+    @for (link of links; track link.path; let i = $index) {
+      <a [routerLink]="link.path" [attr.aria-current]="currentPath(link.path) ? 'page' : null">
+        <span>{{ (i + 1).toString().padStart(2, '0') }}</span>
+        {{ link.label }}
+      </a>
+    }
+  </nav>
+  <div class="menu__foot">
+    <a class="btn btn--primary btn--block" routerLink="/evenements">
+      Billetterie
+      <span class="btn__ico" aria-hidden="true"><tbp-icon name="arrow" [size]="16" /></span>
+    </a>
+    <div class="menu__social">
+      @for (social of socials; track social.name) {
+        <a
+          class="icon-btn"
+          [href]="social.href"
+          target="_blank"
+          rel="noopener"
+          [attr.aria-label]="social.name"
+        >
+          <tbp-icon [name]="social.icon" />
+        </a>
+      }
+    </div>
+  </div>
+</div>

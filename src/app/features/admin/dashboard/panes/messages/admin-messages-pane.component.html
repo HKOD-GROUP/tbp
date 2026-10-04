@@ -1,0 +1,80 @@
+<div class="adm-head">
+  <div>
+    <p class="label">Reçus sur le site</p>
+    <h1 class="h2">Messages</h1>
+  </div>
+  <tbp-button variant="outline" [icon]="false" (click)="exportCsv()">Exporter les inscrits (CSV)</tbp-button>
+</div>
+
+<div class="kpis">
+  <div class="kpi"><b>{{ messagesService.newUnreadCount() }}</b><span>Nouveaux messages</span></div>
+  <div class="kpi"><b>{{ messagesService.messages().length }}</b><span>Messages au total</span></div>
+  <div class="kpi"><b>{{ messagesService.newsletter().length }}</b><span>Inscrits newsletter</span></div>
+</div>
+
+<div class="toolbar">
+  <tbp-tabs [tabs]="sourceTabs" [activeId]="source()" (selected)="source.set($any($event))" />
+</div>
+
+@if (source() === 'contact') {
+  <div class="items">
+    @for (message of messagesService.messages(); track message.id) {
+      <article
+        class="item item--noimg"
+        tabindex="0"
+        role="button"
+        [attr.aria-label]="'Marquer comme lu : ' + message.name"
+        (click)="openMessage(message)"
+        (keydown.enter)="openMessage(message)"
+        (keydown.space)="$event.preventDefault(); openMessage(message)"
+      >
+        <div class="item__body">
+          <span class="item__title">{{ message.name }} · {{ subjectLabel(message.subject) }}</span>
+          <span class="item__meta">{{ message.email }} · {{ message.date | date: 'd MMM' }}</span>
+          <p class="item__excerpt">{{ message.message }}</p>
+        </div>
+        <div class="item__side">
+          <tbp-badge [variant]="message.read ? 'muted' : 'red'">{{ message.read ? 'Lu' : 'Nouveau' }}</tbp-badge>
+          <div style="display: flex; gap: 6px">
+            <a class="icon-btn icon-btn--sm" [href]="'mailto:' + message.email" aria-label="Répondre par e-mail">
+              <svg><use href="#i-mail" /></svg>
+            </a>
+            <tbp-icon-button name="trash" size="sm" [danger]="true" ariaLabel="Supprimer" (click)="askDelete(message)" />
+          </div>
+        </div>
+      </article>
+    } @empty {
+      <p class="small" style="padding: 24px 0; color: var(--muted)">Aucun message pour l'instant.</p>
+    }
+  </div>
+} @else {
+  <div class="items">
+    @for (entry of messagesService.newsletter(); track entry.id) {
+      <article class="item item--noimg">
+        <div class="item__body">
+          <span class="item__title">{{ entry.email }}</span>
+          <span class="item__meta">Inscrit le {{ entry.date | date: 'd MMM y' }}</span>
+        </div>
+      </article>
+    } @empty {
+      <p class="small" style="padding: 24px 0; color: var(--muted)">Aucun inscrit pour l'instant.</p>
+    }
+  </div>
+}
+
+<div class="alert alert--info" style="margin-top: 16px">
+  <svg><use href="#i-info" /></svg>
+  <div>
+    <b>Pas de serveur d'e-mails.</b>
+    Les messages et les inscriptions sont enregistrés dans Firestore et affichés ici. Le bouton « Répondre » ouvre ta
+    messagerie ; l'export CSV permet d'importer les inscrits dans ton outil d'e-mailing.
+  </div>
+</div>
+
+<tbp-confirm-dialog
+  [open]="!!deleteTarget()"
+  title="Supprimer ?"
+  [description]="'Le message de ' + (deleteTarget()?.name ?? '') + ' sera définitivement supprimé.'"
+  (confirmed)="confirmDelete()"
+  (cancelled)="deleteTarget.set(null)"
+/>

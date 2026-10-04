@@ -1,0 +1,24 @@
+<a class="fighter" [routerLink]="href()">
+  <div class="media"></div>
+  <div class="fighter__img">
+    <img class="photo" [ngSrc]="image()" [alt]="fullName()" fill />
+  </div>
+  <div class="fighter__info">
+    <span class="label label--red">{{ category() }}</span>
+    <span class="fighter__name">{{ fullName() }}</span>
+    <div class="record">
+      <span
+        ><b>{{ wins() }}</b
+        >V</span
+      >
+      <span
+        ><b>{{ losses() }}</b
+        >D</span
+      >
+      <span
+        ><b>{{ draws() }}</b
+        >N</span
+      >
+    </div>
+  </div>
+</a>

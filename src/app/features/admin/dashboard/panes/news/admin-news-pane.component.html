@@ -1,0 +1,104 @@
+<div class="adm-head">
+  <div>
+    <p class="label">Contenu</p>
+    <h1 class="h2">News</h1>
+  </div>
+  <tbp-button variant="primary" (click)="openCreate()">Nouvel article</tbp-button>
+</div>
+
+<div class="toolbar">
+  <label class="search">
+    <svg><use href="#i-search" /></svg>
+    <input
+      type="search"
+      placeholder="Rechercher un article"
+      aria-label="Rechercher un article"
+      [value]="search()"
+      (input)="search.set($any($event.target).value)"
+    />
+  </label>
+  <tbp-tabs [tabs]="statusTabs" [activeId]="statusFilter()" (selected)="statusFilter.set($any($event))" />
+</div>
+
+<div class="items">
+  @for (item of filtered(); track item.id) {
+    <article class="item">
+      <div class="media item__img item__img--sq">
+        <img [src]="item.coverUrl" [alt]="item.title" style="width: 100%; height: 100%; object-fit: cover" />
+      </div>
+      <div class="item__body">
+        <span class="item__title">{{ item.title }}</span>
+        <span class="item__meta">{{ item.publishedAt | date: 'd MMM y' }}</span>
+      </div>
+      <div class="item__side">
+        <tbp-badge [variant]="item.published ? 'ok' : 'danger'">
+          {{ item.published ? 'Publié' : 'Brouillon' }}
+        </tbp-badge>
+        <div style="display: flex; gap: 6px">
+          <tbp-icon-button name="edit" size="sm" ariaLabel="Modifier" (click)="openEdit(item)" />
+          <tbp-icon-button name="trash" size="sm" [danger]="true" ariaLabel="Supprimer" (click)="askDelete(item)" />
+        </div>
+      </div>
+    </article>
+  } @empty {
+    <p class="small" style="padding: 24px 0; color: var(--muted)">Aucun article pour l'instant.</p>
+  }
+</div>
+
+<button type="button" class="sheet-veil" [class.is-on]="sheetOpen()" aria-label="Fermer" (click)="closeSheet()"></button>
+<aside class="sheet" [class.is-on]="sheetOpen()" aria-label="Édition d'un article">
+  <div class="sheet__head">
+    <h3>{{ editingId() ? titleCtrl() : 'Nouvel article' }}</h3>
+    <tbp-icon-button name="close" size="sm" ariaLabel="Fermer" (click)="closeSheet()" />
+  </div>
+  <div class="sheet__body">
+    <div class="group">
+      <span class="group__title">Article</span>
+      <tbp-field label="Titre *" [ngModel]="titleCtrl()" (ngModelChange)="titleCtrl.set($event)" />
+      <tbp-textarea
+        label="Extrait *"
+        [maxLength]="160"
+        [ngModel]="excerptCtrl()"
+        (ngModelChange)="excerptCtrl.set($event)"
+      />
+      <div class="form-row">
+        <tbp-field label="Date de publication *" type="date" [ngModel]="publishedAtCtrl()" (ngModelChange)="publishedAtCtrl.set($event)" />
+        <tbp-select label="Gala lié" [options]="eventOptions()" [ngModel]="eventIdCtrl()" (ngModelChange)="eventIdCtrl.set($event)" />
+      </div>
+    </div>
+
+    <div class="group">
+      <span class="group__title">Couverture</span>
+      <tbp-dropzone [previews]="coverPreviews()" (filesAdded)="onCoverAdded($event)" (removed)="removeCover()" />
+      @if (coverUploading()) {
+        <p class="small">Envoi en cours…</p>
+      }
+    </div>
+
+    <div class="group">
+      <span class="group__title">Contenu</span>
+      <tbp-rich-text [ngModel]="contentCtrl()" (ngModelChange)="contentCtrl.set($event)" />
+    </div>
+
+    <div class="group">
+      <tbp-switch
+        label="Publié"
+        description="Sinon, l'article reste en brouillon"
+        [ngModel]="publishedCtrl()"
+        (ngModelChange)="publishedCtrl.set($event)"
+      />
+    </div>
+  </div>
+  <div class="sheet__foot">
+    <tbp-button variant="outline" [icon]="false" (click)="closeSheet()">Annuler</tbp-button>
+    <tbp-button variant="primary" [loading]="saving()" (click)="save()">Enregistrer</tbp-button>
+  </div>
+</aside>
+
+<tbp-confirm-dialog
+  [open]="!!deleteTarget()"
+  title="Supprimer ?"
+  [description]="'L\'article « ' + (deleteTarget()?.title ?? '') + ' » sera définitivement supprimé.'"
+  (confirmed)="confirmDelete()"
+  (cancelled)="deleteTarget.set(null)"
+/>

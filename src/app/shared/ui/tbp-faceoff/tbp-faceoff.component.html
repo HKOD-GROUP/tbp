@@ -1,0 +1,34 @@
+<div class="faceoff">
+  <div class="faceoff__img">
+    <div class="media">
+      <img class="photo" [ngSrc]="image()" [alt]="imageAlt()" fill [priority]="priority()" />
+    </div>
+  </div>
+  <div class="tape">
+    <div class="tape__head">
+      <div class="tape__name">
+        <span class="tape__corner">Coin rouge</span>
+        <b>{{ redName() }}</b>
+      </div>
+      <span class="tape__vs">VS</span>
+      <div class="tape__name">
+        <span class="tape__corner">Coin bleu</span>
+        <b>{{ blueName() }}</b>
+      </div>
+    </div>
+    @if (redRecord() || blueRecord()) {
+      <div class="tape__row">
+        <span>{{ redRecord() ?? '—' }}</span>
+        <em>Record</em>
+        <span>{{ blueRecord() ?? '—' }}</span>
+      </div>
+    }
+    @if (category(); as cat) {
+      <div class="tape__row">
+        <span>{{ cat }}</span>
+        <em>Catégorie</em>
+        <span>{{ cat }}</span>
+      </div>
+    }
+  </div>
+</div>

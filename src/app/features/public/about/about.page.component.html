@@ -1,0 +1,57 @@
+<section class="section wrap wrap--text">
+  <p class="eyebrow">L'équipe</p>
+  <h1 class="h1">Plus qu'une équipe. <span class="it">Une famille.</span></h1>
+  <p class="statement" style="margin-top: 32px">{{ manifesto }}</p>
+</section>
+
+<section class="section section--line wrap">
+  <div class="sec-head">
+    <div>
+      <p class="eyebrow">Nos valeurs</p>
+      <h2 class="h2">Ce qui nous guide</h2>
+      <p class="lead" style="margin-top: 16px">
+        Trois principes que chaque boxeur de l'écurie porte sur le ring comme en dehors.
+      </p>
+    </div>
+  </div>
+  <div class="values">
+    <div class="value">
+      <span class="value__mark" aria-hidden="true">R</span>
+      <h3>Respect</h3>
+      <p>Des adversaires, du public, de soi-même.</p>
+    </div>
+    <div class="value">
+      <span class="value__mark" aria-hidden="true">D</span>
+      <h3>Discipline</h3>
+      <p>Le travail avant tout, chaque jour.</p>
+    </div>
+    <div class="value">
+      <span class="value__mark" aria-hidden="true">C</span>
+      <h3>Confiance en soi</h3>
+      <p>Construire son avenir sans renoncer à qui on est.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--line wrap">
+  <div class="sec-head">
+    <div>
+      <p class="eyebrow">Les fondateurs</p>
+      <h2 class="h2">Qui sommes-nous</h2>
+    </div>
+  </div>
+  <div class="people">
+    @for (founder of founders; track founder.name) {
+      <div class="person">
+        <div class="person__avatar">
+          <img class="photo" [ngSrc]="founder.image" [alt]="founder.name" fill />
+        </div>
+        <div>
+          <span class="person__name">{{ founder.name }}</span>
+          <p class="small muted">{{ founder.role }}</p>
+          <p class="small" style="margin-top: 8px">{{ founder.bio }}</p>
+        </div>
+      </div>
+    }
+  </div>
+</section>

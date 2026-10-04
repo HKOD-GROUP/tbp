@@ -1,0 +1,53 @@
+<section class="section wrap">
+  <p class="eyebrow">Galas</p>
+  <h1 class="h1">Événements</h1>
+
+  <div style="margin: 32px 0">
+    <tbp-tabs [tabs]="tabs" [activeId]="activeTab()" (selected)="selectTab($event)" />
+  </div>
+
+  @if (activeTab() === 'upcoming') {
+    @if (nextEvent(); as event) {
+      <div class="split">
+        <div class="media r-4x5">
+          <img class="photo" [ngSrc]="event.posterUrl" [alt]="event.title" fill priority />
+        </div>
+        <div style="display: grid; gap: 24px">
+          <div>
+            <p class="label">Prochain gala</p>
+            <h2 class="h2">{{ event.title }}</h2>
+          </div>
+          <tbp-specs [rows]="nextEventSpecs()" />
+          <div class="ticket"><tbp-countdown [target]="event.date" /></div>
+          <div class="actions">
+            <tbp-button variant="primary" [to]="'/evenements/' + event.slug"
+              >Voir le détail</tbp-button
+            >
+          </div>
+        </div>
+      </div>
+    } @else if (!events.loading()) {
+      <div class="empty">
+        <p class="h3">Prochain gala annoncé très bientôt.</p>
+      </div>
+    }
+  } @else {
+    @if (pastEventRows().length > 0) {
+      <div class="rows">
+        @for (event of pastEventRows(); track event.slug) {
+          <tbp-event-row
+            [href]="'/evenements/' + event.slug"
+            [posterImage]="event.posterUrl"
+            [date]="event.formattedDate"
+            [title]="event.title"
+            [place]="event.city"
+          />
+        }
+      </div>
+    } @else if (!events.loading()) {
+      <div class="empty">
+        <p class="h3">Pas encore de gala passé.</p>
+      </div>
+    }
+  }
+</section>

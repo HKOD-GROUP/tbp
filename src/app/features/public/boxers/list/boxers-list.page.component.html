@@ -1,0 +1,24 @@
+<section class="section wrap">
+  <p class="eyebrow">Roster</p>
+  <h1 class="h1" style="margin-bottom: 40px">Nos boxeurs</h1>
+  <div class="grid grid--3">
+    @for (boxer of boxers; track boxer.slug) {
+      <tbp-fighter-card
+        [href]="'/boxeurs/' + boxer.slug"
+        [fullName]="boxer.fullName"
+        [category]="boxer.category"
+        [image]="boxer.images.cutout2"
+        [wins]="boxer.record.wins"
+        [losses]="boxer.record.losses"
+        [draws]="boxer.record.draws"
+      />
+    }
+    @if (showGrowingRosterCard) {
+      <div class="empty">
+        <p class="h3">Le roster s'agrandit.</p>
+        <p class="small">De nouveaux boxeurs rejoindront bientôt l'écurie.</p>
+        <a class="link" routerLink="/contact">Tu es boxeur ? Écris-nous</a>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,50 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // UID du compte admin unique (EDB 5 et 8), à renseigner après création
+    // manuelle du compte dans la console Firebase Authentication.
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == '68BS0N4ngd0yVPz0YQ7n3cll20zG';
+    }
+
+    function isValidEmail(email) {
+      return email is string
+        && email.size() <= 254
+        && email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$');
+    }
+
+    match /events/{eventId} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /news/{newsId} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /products/{productId} {
+      allow read: if resource.data.visible == true || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /contactMessages/{messageId} {
+      allow read, update, delete: if isAdmin();
+      allow create: if isValidEmail(request.resource.data.email)
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 200
+        && request.resource.data.subject in ['partenariat', 'presse', 'boxeur', 'billetterie', 'autre']
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0
+        && request.resource.data.message.size() <= 5000
+        && request.resource.data.read == false;
+    }
+
+    match /newsletter/{entryId} {
+      allow read, delete: if isAdmin();
+      allow create: if isValidEmail(request.resource.data.email);
+    }
+  }
+}

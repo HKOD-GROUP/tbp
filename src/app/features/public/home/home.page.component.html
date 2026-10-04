@@ -1,0 +1,201 @@
+<tbp-poster
+  variant="salle"
+  backgroundImage="assets/images/ring-face.webp"
+  backgroundAlt="La salle et le ring sous les projecteurs"
+  giantWord="TBP"
+  [giantGhost]="true"
+  [priority]="true"
+>
+  <div tbpPosterCopy>
+    <p class="eyebrow">Vigneux-sur-Seine</p>
+    <h1 class="display">Plus qu'une équipe. <span class="it">Une famille.</span></h1>
+    <p class="lead">
+      Team Baraia Promotion organise les Galas du Peuple : des événements populaires et
+      accessibles à tous.
+    </p>
+    <div class="actions">
+      <tbp-button variant="primary" to="/evenements">Prochain gala</tbp-button>
+      <tbp-button variant="glass" [icon]="false" to="/a-propos">Notre histoire</tbp-button>
+    </div>
+  </div>
+</tbp-poster>
+
+@if (events.nextEvent(); as next) {
+  <tbp-strip-red [href]="'/evenements/' + next.slug">
+    <span><b>{{ next.date | date: 'dd.MM.yyyy' }}</b> {{ next.title }}</span>
+    <span>{{ next.venue }}, {{ next.city }}</span>
+  </tbp-strip-red>
+}
+
+<section class="section section--line wrap" id="promotion">
+  <div class="sec-head">
+    <div>
+      <p class="eyebrow">La promotion</p>
+      <h2 class="h2">Notre mission</h2>
+      <p class="lead" style="margin-top: 16px">
+        Organiser des galas accessibles à tous, révéler les talents de nos quartiers et
+        transmettre, combat après combat, nos trois principes.
+      </p>
+    </div>
+  </div>
+  <div class="values">
+    <div class="value">
+      <span class="value__mark" aria-hidden="true">R</span>
+      <h3>Respect</h3>
+      <p>Des adversaires, du public, de soi-même.</p>
+    </div>
+    <div class="value">
+      <span class="value__mark" aria-hidden="true">D</span>
+      <h3>Discipline</h3>
+      <p>Le travail avant tout, chaque jour.</p>
+    </div>
+    <div class="value">
+      <span class="value__mark" aria-hidden="true">C</span>
+      <h3>Confiance en soi</h3>
+      <p>Construire son avenir sans renoncer à qui on est.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--line wrap" id="combattant">
+  <div class="sec-head">
+    <div>
+      <p class="eyebrow">Notre combattant</p>
+      <h2 class="h2">{{ chadi.fullName }}</h2>
+    </div>
+  </div>
+  <div class="spotlight">
+    <div class="spotlight__card">
+      <div class="spotlight__fig">
+        <img class="photo" [ngSrc]="chadi.images.cutout1" [alt]="chadi.fullName" fill />
+      </div>
+    </div>
+    <div style="display: grid; gap: 20px">
+      <div class="bigstat">
+        <b
+          >{{ chadi.record.wins }}-{{ chadi.record.losses }}-<i>{{ chadi.record.draws }}</i></b
+        >
+      </div>
+      <ul class="palmares">
+        @for (item of chadi.achievements; track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+      <div class="actions">
+        <tbp-button variant="light" [icon]="false" [to]="'/boxeurs/' + chadi.slug"
+          >Voir sa fiche</tbp-button
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--line wrap" id="evenement">
+  @if (events.nextEvent(); as next) {
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Le prochain gala</p>
+        <h2 class="h2">{{ next.title }}</h2>
+      </div>
+      <tbp-link [to]="'/evenements/' + next.slug">Le programme</tbp-link>
+    </div>
+    <tbp-faceoff
+      image="assets/images/combat.webp"
+      imageAlt="Échange de coups"
+      [redName]="chadi.fullName"
+      [redRecord]="chadi.record.wins + '-' + chadi.record.losses + '-' + chadi.record.draws"
+      [category]="chadi.category"
+    />
+    <div class="actions" style="margin-top: 32px">
+      <div class="ticket"><tbp-countdown [target]="next.date" /></div>
+      <tbp-button variant="primary" [to]="'/evenements/' + next.slug">Réserver</tbp-button>
+    </div>
+  } @else if (!events.loading()) {
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Le prochain gala</p>
+        <h2 class="h2">Annoncé très bientôt</h2>
+      </div>
+    </div>
+    <div class="empty">
+      <p class="h3">Prochain gala annoncé très bientôt.</p>
+    </div>
+  }
+</section>
+
+<section class="section section--line wrap" id="ring">
+  <div class="sec-head">
+    <div>
+      <p class="eyebrow">Dans le ring</p>
+      <h2 class="h2">L'ambiance des galas</h2>
+    </div>
+  </div>
+  <tbp-mosaic [images]="mosaicImages" />
+</section>
+
+@if (pastEventRows().length > 0) {
+  <section class="section section--line wrap" id="galas-passes">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">Galas passés</p>
+        <h2 class="h2">Les éditions précédentes</h2>
+      </div>
+      <tbp-link to="/evenements">Tous les galas</tbp-link>
+    </div>
+    <div class="rows">
+      @for (event of pastEventRows(); track event.slug) {
+        <tbp-event-row
+          [href]="'/evenements/' + event.slug"
+          [posterImage]="event.posterUrl"
+          [date]="event.formattedDate"
+          [title]="event.title"
+          [place]="event.city"
+        />
+      }
+    </div>
+  </section>
+}
+
+@if (latestNewsRows().length > 0) {
+  <section class="section section--line wrap" id="news">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow">News</p>
+        <h2 class="h2">Les dernières actualités</h2>
+      </div>
+      <tbp-link to="/news">Toutes les news</tbp-link>
+    </div>
+    <div class="grid grid--3">
+      @for (article of latestNewsRows(); track article.slug) {
+        <tbp-news-card
+          [href]="'/news/' + article.slug"
+          [image]="article.coverUrl"
+          [date]="article.formattedDate"
+          [title]="article.title"
+          [excerpt]="article.excerpt"
+        />
+      }
+    </div>
+  </section>
+}
+
+<section class="section wrap" id="boutique">
+  <div class="sec-head">
+    <div>
+      <p class="eyebrow">Boutique</p>
+      <h2 class="h2">La collection TBP</h2>
+    </div>
+    <tbp-link to="/boutique">Voir la boutique</tbp-link>
+  </div>
+  <div class="empty">
+    <p class="h3">La boutique ouvre bientôt.</p>
+    <p class="small">Reviens bientôt pour découvrir la collection.</p>
+  </div>
+</section>
+
+<section class="section section--line wrap">
+  <div class="cta-band">
+    <h2 class="h2">Le prochain gala <span class="it">t'attend.</span></h2>
+    <tbp-subscribe (subscribed)="subscribe($event)" />
+  </div>
+</section>

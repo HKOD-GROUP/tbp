@@ -1,0 +1,22 @@
+@if (isToday()) {
+  <div class="badge badge--red badge--live">Ce soir</div>
+} @else {
+  <div class="countdown" [class.countdown--sm]="compact()">
+    <div>
+      <b class="num">{{ pad(parts().days) }}</b>
+      <span>Jours</span>
+    </div>
+    <div>
+      <b class="num">{{ pad(parts().hours) }}</b>
+      <span>Heures</span>
+    </div>
+    <div>
+      <b class="num">{{ pad(parts().minutes) }}</b>
+      <span>Min</span>
+    </div>
+    <div>
+      <b class="num">{{ pad(parts().seconds) }}</b>
+      <span>Sec</span>
+    </div>
+  </div>
+}

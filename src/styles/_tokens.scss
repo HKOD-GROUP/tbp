@@ -1,0 +1,38 @@
+// Jetons de design : noir/blanc/rouge TBP, formes arrondies façon lockir
+// (pilule sur les commandes, verre dépoli sur les panneaux).
+:root {
+  --ink: #090909;
+  --ink-2: #121212;
+  --ink-3: #181818;
+  --ink-4: #222222;
+  --paper: #ffffff;
+  --muted: rgba(255, 255, 255, 0.56);
+  --dim: rgba(255, 255, 255, 0.32);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-2: rgba(255, 255, 255, 0.16);
+  --red: #e11d2a;
+  --red-hi: #ff3b48;
+  --red-lo: #a3121f;
+  --red-soft: rgba(225, 29, 42, 0.14);
+  --red-text: #ff3b48;
+  --blue: #3d6bff;
+  --ok: #3ddc84;
+  --sans: 'TBP Archivo', 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --container: 1360px;
+  --gutter: clamp(20px, 4.5vw, 64px);
+  --nav-h: 76px;
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r: 16px;
+  --r-lg: 22px;
+  --r-full: 999px;
+  --ease: cubic-bezier(0.2, 0.9, 0.25, 1);
+  --t: 0.25s;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --nav-h: 66px;
+  }
+}

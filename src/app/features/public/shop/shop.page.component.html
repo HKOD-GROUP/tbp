@@ -1,0 +1,31 @@
+<section class="section wrap">
+  <p class="eyebrow">Boutique</p>
+  <h1 class="h1">La collection TBP</h1>
+
+  @if (products.isOpen()) {
+    <div class="grid grid--3" style="margin-top: 32px">
+      @for (product of products.visible(); track product.slug) {
+        <tbp-product-card
+          [image]="product.images[0]"
+          [name]="product.name"
+          [price]="product.price + ' €'"
+          [description]="product.description"
+          [buyHref]="buyHref(product)"
+        >
+          @if (product.sizes?.length) {
+            <tbp-size-picker
+              [sizes]="product.sizes ?? []"
+              [ngModel]="product.sizes?.[0]?.label"
+              (ngModelChange)="selectSize(product.slug, $event)"
+            />
+          }
+        </tbp-product-card>
+      }
+    </div>
+  } @else if (!products.loading()) {
+    <div class="empty" style="margin-top: 32px">
+      <p class="h3">La boutique ouvre bientôt.</p>
+      <p class="small">Reviens bientôt pour découvrir la collection.</p>
+    </div>
+  }
+</section>

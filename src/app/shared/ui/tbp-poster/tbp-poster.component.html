@@ -1,0 +1,32 @@
+<section [class]="classes()">
+  <div class="poster__bg media">
+    <img
+      class="photo"
+      [ngSrc]="backgroundImage()"
+      [alt]="backgroundAlt()"
+      fill
+      [priority]="priority()"
+    />
+  </div>
+
+  @if (giantWord(); as word) {
+    <span class="giant" [class.giant--ghost]="giantGhost()">{{ word }}</span>
+  }
+
+  @if (figureImage(); as fig) {
+    <div class="poster__fig">
+      <div class="media">
+        <img class="photo" [ngSrc]="fig" [alt]="figureAlt() ?? ''" fill priority />
+      </div>
+    </div>
+  }
+
+  <div class="wrap poster__in">
+    <div class="poster__row">
+      <div class="poster__copy">
+        <ng-content select="[tbpPosterCopy]" />
+      </div>
+      <ng-content select="[tbpPosterAside]" />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,139 @@
+<div class="adm-head">
+  <div>
+    <p class="label">Contenu</p>
+    <h1 class="h2">Boutique</h1>
+  </div>
+  <tbp-button variant="primary" (click)="openCreate()">Nouvel article</tbp-button>
+</div>
+
+@if (productsService.all().length > 0 && !hasVisibleProducts()) {
+  <tbp-alert variant="info" title="La boutique affiche « Bientôt »." style="margin-bottom: 16px">
+    Rends au moins un article visible pour ouvrir la boutique.
+  </tbp-alert>
+} @else if (productsService.all().length > 0) {
+  <tbp-alert variant="info" title="La boutique est ouverte." style="margin-bottom: 16px">
+    Masque tous les articles pour réafficher la page « Bientôt ».
+  </tbp-alert>
+}
+
+<div class="items">
+  @for (product of productsService.all(); track product.id) {
+    <article class="item">
+      <div class="media item__img item__img--sq">
+        <img [src]="product.images[0]" [alt]="product.name" style="width: 100%; height: 100%; object-fit: cover" />
+      </div>
+      <div class="item__body">
+        <span class="item__title">{{ product.name }}</span>
+        <span class="item__meta">
+          {{ product.price }} €
+          @if (product.sizes?.length) {
+            · {{ sizeLabels(product) }}
+          }
+        </span>
+      </div>
+      <div class="item__side">
+        <tbp-badge [variant]="product.visible ? 'ok' : 'muted'">
+          {{ product.visible ? 'Visible' : 'Masqué' }}
+        </tbp-badge>
+        <div style="display: flex; gap: 6px">
+          <tbp-icon-button name="edit" size="sm" ariaLabel="Modifier" (click)="openEdit(product)" />
+          <tbp-icon-button name="trash" size="sm" [danger]="true" ariaLabel="Supprimer" (click)="askDelete(product)" />
+        </div>
+      </div>
+    </article>
+  } @empty {
+    <p class="small" style="padding: 24px 0; color: var(--muted)">Aucun article pour l'instant.</p>
+  }
+</div>
+
+<button type="button" class="sheet-veil" [class.is-on]="sheetOpen()" aria-label="Fermer" (click)="closeSheet()"></button>
+<aside class="sheet" [class.is-on]="sheetOpen()" aria-label="Édition d'un article de la boutique">
+  <div class="sheet__head">
+    <h3>{{ editingId() ? nameCtrl() : 'Nouvel article' }}</h3>
+    <tbp-icon-button name="close" size="sm" ariaLabel="Fermer" (click)="closeSheet()" />
+  </div>
+  <div class="sheet__body">
+    <div class="group">
+      <span class="group__title">Article</span>
+      <div class="form-row">
+        <tbp-field label="Nom *" [ngModel]="nameCtrl()" (ngModelChange)="nameCtrl.set($event)" />
+        <tbp-field label="Prix (€) *" [ngModel]="priceCtrl()" (ngModelChange)="priceCtrl.set($event)" />
+      </div>
+      <tbp-textarea label="Description" [ngModel]="descriptionCtrl()" (ngModelChange)="descriptionCtrl.set($event)" />
+      <tbp-field label="Couleurs (séparées par une virgule)" [ngModel]="colorsCtrl()" (ngModelChange)="colorsCtrl.set($event)" />
+    </div>
+
+    <div class="group">
+      <span class="group__title">Photos</span>
+      <span class="group__desc">La première est la photo principale, 4 maximum.</span>
+      <tbp-dropzone [previews]="imagePreviews()" [multiple]="true" (filesAdded)="onImagesAdded($event)" (removed)="removeImage($event)" />
+      @if (imagesUploading()) {
+        <p class="small">Envoi en cours…</p>
+      }
+    </div>
+
+    <div class="group">
+      <span class="group__title">Tailles et liens PayPal</span>
+      <span class="group__desc">Un lien de paiement PayPal par taille, ou un lien unique si l'article n'a pas de taille.</span>
+      @for (size of sizes(); track $index) {
+        <div class="size-row">
+          <label class="field">
+            <input class="field__input" [value]="size.label" (input)="updateSizeLabel($index, $any($event.target).value)" />
+            <span class="field__label">Taille</span>
+          </label>
+          <label class="field" [class.is-error]="isSizeUrlInvalid(size.paypalUrl)">
+            <input class="field__input" [value]="size.paypalUrl" (input)="updateSizeUrl($index, $any($event.target).value)" />
+            <span class="field__label">Lien PayPal</span>
+          </label>
+          <label class="field field--stock">
+            <select class="field__input" [value]="size.available" (change)="updateSizeStock($index, $any($event.target).value)">
+              @for (opt of stockOptions; track opt.value) {
+                <option [value]="opt.value">{{ opt.label }}</option>
+              }
+            </select>
+            <span class="field__label">Stock</span>
+          </label>
+          <tbp-icon-button name="trash" size="sm" [danger]="true" ariaLabel="Retirer cette taille" (click)="removeSize($index)" />
+        </div>
+        @if (isSizeUrlInvalid(size.paypalUrl)) {
+          <p class="field__help field__help--error" style="margin-top: -6px">Le lien doit commencer par https://www.paypal.com/ncp/payment/</p>
+        }
+      }
+      <tbp-button variant="outline" size="sm" [icon]="false" (click)="addSize()">+ Ajouter une taille</tbp-button>
+
+      @if (!sizes().length) {
+        <tbp-field
+          label="Lien PayPal (si pas de taille)"
+          type="url"
+          [ngModel]="singlePaypalUrl()"
+          (ngModelChange)="singlePaypalUrl.set($event)"
+        />
+      }
+    </div>
+
+    <div class="group">
+      <tbp-field label="Ordre d'affichage" [ngModel]="orderCtrl().toString()" (ngModelChange)="orderCtrl.set(+$event || 0)" />
+    </div>
+
+    <div class="group">
+      <tbp-switch
+        label="Visible dans la boutique"
+        description="Masqué tant que le stock n'est pas prêt"
+        [ngModel]="visibleCtrl()"
+        (ngModelChange)="visibleCtrl.set($event)"
+      />
+    </div>
+  </div>
+  <div class="sheet__foot">
+    <tbp-button variant="outline" [icon]="false" (click)="closeSheet()">Annuler</tbp-button>
+    <tbp-button variant="primary" [loading]="saving()" (click)="save()">Enregistrer</tbp-button>
+  </div>
+</aside>
+
+<tbp-confirm-dialog
+  [open]="!!deleteTarget()"
+  title="Supprimer ?"
+  [description]="'L\'article « ' + (deleteTarget()?.name ?? '') + ' » sera définitivement supprimé.'"
+  (confirmed)="confirmDelete()"
+  (cancelled)="deleteTarget.set(null)"
+/>

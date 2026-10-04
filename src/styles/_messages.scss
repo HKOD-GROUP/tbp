@@ -1,0 +1,156 @@
+// Messages (DS section 7) : alertes, toasts, boîte de dialogue de confirmation.
+.alert {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 18px;
+  border-radius: var(--r-sm);
+  background: var(--ink-3);
+  box-shadow: inset 3px 0 0 var(--line-2);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.alert svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+}
+
+.alert b {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.alert--ok {
+  box-shadow: inset 3px 0 0 var(--ok);
+}
+
+.alert--ok svg {
+  color: var(--ok);
+}
+
+.alert--error {
+  box-shadow: inset 3px 0 0 var(--red);
+  background: var(--red-soft);
+}
+
+.alert--error svg {
+  color: #ff6a73;
+}
+
+.alert--info {
+  box-shadow: inset 3px 0 0 var(--paper);
+}
+
+.alert--info svg {
+  color: var(--paper);
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(24px + var(--safe-b));
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: var(--r-xs);
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  transform: translate(-50%, calc(100% + 60px));
+  visibility: hidden;
+  transition:
+    transform 0.45s var(--ease),
+    visibility 0s 0.45s;
+}
+
+.toast.is-on {
+  transform: translate(-50%, 0);
+  visibility: visible;
+  transition: transform 0.45s var(--ease);
+}
+
+.toast svg {
+  width: 20px;
+  height: 20px;
+  color: #1a9b55;
+}
+
+.toast--static {
+  position: static;
+  transform: none;
+  visibility: visible;
+  display: inline-flex;
+}
+
+.dialog-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 1400;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.75);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s var(--ease),
+    visibility 0s 0.3s;
+}
+
+.dialog-veil.is-on {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s var(--ease);
+}
+
+.dialog {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+  border-radius: var(--r);
+  background: var(--ink-3);
+  box-shadow:
+    inset 0 3px 0 var(--red),
+    0 40px 100px rgba(0, 0, 0, 0.7);
+  transform: translateY(16px);
+  transition: transform 0.35s var(--ease);
+}
+
+.dialog-veil.is-on .dialog {
+  transform: none;
+}
+
+.dialog h4 {
+  font: 640 21px / 1.25 var(--sans);
+  font-stretch: 95%;
+  margin-bottom: 10px;
+}
+
+.dialog p {
+  color: var(--muted);
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+
+.dialog .actions {
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.dialog--static {
+  position: static;
+  margin: 0 auto;
+  transform: none;
+}

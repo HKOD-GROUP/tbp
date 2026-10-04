@@ -1,0 +1,33 @@
+<div
+  class="dropzone"
+  [class.is-over]="isOver()"
+  (dragover)="$event.preventDefault(); isOver.set(true)"
+  (dragleave)="isOver.set(false)"
+  (drop)="handleDrop($event)"
+>
+  <tbp-icon name="upload" [size]="28" />
+  <p>
+    Glissez vos fichiers ou
+    <button type="button" class="dropzone__browse" (click)="browse()">parcourir</button>
+  </p>
+  <input
+    #fileInput
+    type="file"
+    hidden
+    [attr.accept]="accept()"
+    [attr.multiple]="multiple() ? '' : null"
+    (change)="handleInputChange($any($event.target).files)"
+  />
+</div>
+@if (previews().length) {
+  <ul class="thumbs">
+    @for (preview of previews(); track preview.url; let i = $index) {
+      <li class="thumb">
+        <img [src]="preview.url" [alt]="preview.name" />
+        <button type="button" aria-label="Supprimer" (click)="removed.emit(i)">
+          <tbp-icon name="close" [size]="12" />
+        </button>
+      </li>
+    }
+  </ul>
+}

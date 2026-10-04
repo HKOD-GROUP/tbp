@@ -1,0 +1,43 @@
+@if (to(); as rl) {
+  <a
+    [class]="classes()"
+    [routerLink]="disabled() ? null : rl"
+    [attr.target]="target() ?? null"
+    [attr.rel]="rel() ?? null"
+    [attr.aria-disabled]="disabled() ? 'true' : null"
+    [attr.tabindex]="disabled() ? -1 : null"
+  >
+    <ng-container [ngTemplateOutlet]="content" />
+  </a>
+} @else {
+  @if (href(); as link) {
+    <a
+      [class]="classes()"
+      [href]="disabled() ? null : link"
+      [attr.target]="target() ?? null"
+      [attr.rel]="rel() ?? null"
+      [attr.aria-disabled]="disabled() ? 'true' : null"
+      [attr.tabindex]="disabled() ? -1 : null"
+    >
+      <ng-container [ngTemplateOutlet]="content" />
+    </a>
+  } @else {
+    <button
+      [class]="classes()"
+      [type]="type()"
+      [disabled]="disabled()"
+      [attr.aria-busy]="loading() ? 'true' : null"
+    >
+      <ng-container [ngTemplateOutlet]="content" />
+    </button>
+  }
+}
+
+<ng-template #content>
+  <ng-content />
+  @if (icon()) {
+    <span class="btn__ico" aria-hidden="true">
+      <tbp-icon name="arrow" [size]="16" />
+    </span>
+  }
+</ng-template>

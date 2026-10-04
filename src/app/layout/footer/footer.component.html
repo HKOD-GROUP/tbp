@@ -1,0 +1,63 @@
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <a class="footer__logo" routerLink="/" aria-label="Team Baraia Promotion, accueil">
+          <tbp-logo />
+        </a>
+        <p class="small" style="max-width: 32ch">
+          Promotion de boxe basée à Vigneux-sur-Seine. Organisatrice des Galas du Peuple.
+        </p>
+        <div class="socials" style="margin-top: 20px">
+          @for (social of socials; track social.name) {
+            <a
+              class="icon-btn"
+              [href]="social.href"
+              target="_blank"
+              rel="noopener"
+              [attr.aria-label]="social.name"
+            >
+              <tbp-icon [name]="social.icon" />
+            </a>
+          }
+        </div>
+      </div>
+      <div>
+        <h4>Explorer</h4>
+        <ul>
+          <li><a routerLink="/evenements">Galas</a></li>
+          <li><a routerLink="/boxeurs">Boxeurs</a></li>
+          <li><a routerLink="/a-propos">L'équipe</a></li>
+          <li><a routerLink="/news">News</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Boutique</h4>
+        <ul>
+          <li><a routerLink="/boutique">Collection</a></li>
+          <li><a routerLink="/evenements">Billetterie</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a routerLink="/contact">Nous écrire</a></li>
+          <li>
+            <a href="https://www.instagram.com/teambaraia.promotion" target="_blank" rel="noopener"
+              >Instagram</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap footer__bottom">
+    <span>© {{ year }} Team Baraia Promotion · tbp.fr</span>
+    <nav>
+      <a routerLink="/mentions-legales">Mentions légales</a>
+      <a routerLink="/confidentialite">Confidentialité</a>
+      <a routerLink="/cgv">CGV</a>
+    </nav>
+  </div>
+</footer>

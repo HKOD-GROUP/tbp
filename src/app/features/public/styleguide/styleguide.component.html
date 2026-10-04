@@ -1,0 +1,325 @@
+<main id="main" class="wrap sg">
+  <header class="sg-head">
+    <tbp-logo />
+    <p class="small">Outil de développement — absent de la production</p>
+  </header>
+
+  <section class="sg-section">
+    <p class="label">01</p>
+    <h2 class="h2">Couleurs</h2>
+    <ul class="sg-colors">
+      @for (color of colors; track color.variable) {
+        <li class="sg-color">
+          <span class="sg-swatch" [style.background]="'var(' + color.variable + ')'"></span>
+          <span class="small">{{ color.name }}</span>
+          <span class="small dim">{{ color.variable }}</span>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section class="sg-section">
+    <p class="label">02</p>
+    <h2 class="h2">Typographie</h2>
+    <div class="sg-type">
+      <p class="display">Display 7-0-1</p>
+      <p class="h1">Titre H1</p>
+      <p class="h2">Titre H2</p>
+      <p class="h3">Titre H3</p>
+      <p class="h4">Titre H4</p>
+      <p class="label">Libellé étendu</p>
+      <p class="lead">
+        Phrase d'accroche (lead) : Plus qu'une équipe. Une famille. Team Baraia Promotion.
+      </p>
+      <p class="small">Petit texte (small), pour les mentions et métadonnées.</p>
+      <div class="sg-giant-demo">
+        <span class="giant">CHADI</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sg-section">
+    <p class="label">03</p>
+    <h2 class="h2">Grille</h2>
+    <p class="small">
+      Conteneur {{ 'var(--container)' }} = 1360px, marges fluides via la variable --gutter.
+    </p>
+    <div class="sg-grid-demo">
+      <div class="sg-grid-demo__inner">Conteneur</div>
+    </div>
+    <ul class="sg-breakpoints">
+      @for (bp of breakpoints; track bp.name) {
+        <li class="small">
+          <b class="red">{{ bp.name }}</b> — max-width : {{ bp.value }}
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section class="sg-section">
+    <p class="label">04</p>
+    <h2 class="h2">Icônes</h2>
+    <ul class="sg-icons">
+      @for (icon of icons; track icon) {
+        <li class="sg-icon">
+          <tbp-icon [name]="icon" />
+          <span class="small">{{ icon }}</span>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <section class="sg-section">
+    <p class="label">05</p>
+    <h2 class="h2">Boutons et liens</h2>
+
+    <p class="small">Variantes</p>
+    <div class="actions sg-row">
+      <tbp-button variant="primary">Réserver</tbp-button>
+      <tbp-button variant="light">La fiche</tbp-button>
+      <tbp-button variant="outline" [icon]="false">Le roster</tbp-button>
+      <tbp-button variant="glass" [icon]="false">Notre histoire</tbp-button>
+      <tbp-button variant="danger" [icon]="false">Supprimer</tbp-button>
+    </div>
+
+    <p class="small">Tailles</p>
+    <div class="actions sg-row">
+      <tbp-button size="sm">Petit</tbp-button>
+      <tbp-button size="md">Moyen</tbp-button>
+      <tbp-button size="lg">Grand</tbp-button>
+    </div>
+
+    <p class="small">États</p>
+    <div class="actions sg-row">
+      <tbp-button forceState="is-hover">Survol</tbp-button>
+      <tbp-button forceState="is-active">Appui</tbp-button>
+      <tbp-button forceState="is-focus">Focus</tbp-button>
+      <tbp-button [disabled]="true">Désactivé</tbp-button>
+      <tbp-button [loading]="true">Chargement</tbp-button>
+    </div>
+
+    <p class="small">Icon-boutons</p>
+    <div class="actions sg-row">
+      <tbp-icon-button name="edit" ariaLabel="Modifier" />
+      <tbp-icon-button name="trash" ariaLabel="Supprimer" [danger]="true" />
+      <tbp-icon-button name="close" ariaLabel="Fermer" size="sm" />
+    </div>
+
+    <p class="small">Liens</p>
+    <div class="actions sg-row">
+      <tbp-link href="#">Toutes les news</tbp-link>
+      <tbp-link href="#" variant="red">Voir sa fiche</tbp-link>
+      <tbp-link href="#" variant="back">Retour</tbp-link>
+      <tbp-link href="#" variant="plain">Discret</tbp-link>
+    </div>
+  </section>
+
+  <section class="sg-section">
+    <p class="label">06</p>
+    <h2 class="h2">Badges</h2>
+    <div class="actions sg-row">
+      <tbp-badge>Par défaut</tbp-badge>
+      <tbp-badge variant="red">Nouveau</tbp-badge>
+      <tbp-badge variant="muted">Brouillon</tbp-badge>
+      <tbp-badge variant="ok">Publié</tbp-badge>
+      <tbp-badge variant="danger">Épuisé</tbp-badge>
+      <tbp-badge variant="red" [live]="true">Ce soir</tbp-badge>
+    </div>
+  </section>
+
+  <section class="sg-section">
+    <p class="label">07</p>
+    <h2 class="h2">Formulaires</h2>
+
+    <div class="form sg-form-demo">
+      <tbp-field label="Nom" placeholder="Votre nom" />
+      <tbp-field label="E-mail" type="email" errorMessage="Adresse e-mail invalide" />
+      <tbp-select label="Objet" [options]="selectOptions" placeholder="Choisir un objet" />
+      <tbp-textarea label="Message" [maxLength]="160" hint="160 caractères maximum" />
+      <tbp-checkbox>J'accepte la politique de confidentialité</tbp-checkbox>
+      <tbp-switch label="Publié sur le site" description="Visible par tous" />
+    </div>
+
+    <p class="small">Sélecteur de taille</p>
+    <div class="sg-row">
+      <tbp-size-picker [sizes]="sizeOptions" />
+    </div>
+
+    <p class="small">Inscription newsletter</p>
+    <div class="sg-row">
+      <tbp-subscribe />
+    </div>
+
+    <p class="small">Dépôt de fichiers</p>
+    <div class="sg-row">
+      <tbp-dropzone />
+    </div>
+
+    <p class="small">Éditeur de texte riche</p>
+    <div class="sg-row">
+      <tbp-rich-text placeholder="Rédige l'article ici…" />
+    </div>
+  </section>
+
+  <section class="sg-section">
+    <p class="label">08</p>
+    <h2 class="h2">Messages</h2>
+
+    <p class="small">Alertes</p>
+    <div class="sg-form-demo sg-row">
+      <tbp-alert variant="ok" title="Message envoyé"
+        >Nous reviendrons vers vous rapidement.</tbp-alert
+      >
+      <tbp-alert variant="error" title="Erreur">Le formulaire contient des erreurs.</tbp-alert>
+      <tbp-alert variant="info">Les champs marqués d'un astérisque sont obligatoires.</tbp-alert>
+    </div>
+
+    <p class="small">Toast</p>
+    <div class="actions sg-row">
+      <tbp-button variant="outline" [icon]="false" (click)="showToast()"
+        >Déclencher un toast</tbp-button
+      >
+    </div>
+
+    <p class="small">Fenêtre de confirmation</p>
+    <div class="actions sg-row">
+      <tbp-button variant="danger" [icon]="false" (click)="openDialog()"
+        >Supprimer un gala</tbp-button
+      >
+    </div>
+    <tbp-confirm-dialog
+      title="Supprimer ?"
+      description="Cette action est définitive."
+      [open]="dialogOpen"
+      (confirmed)="closeDialog()"
+      (cancelled)="closeDialog()"
+    />
+  </section>
+
+  <section class="sg-section">
+    <p class="label">09</p>
+    <h2 class="h2">Composants boxe</h2>
+
+    <p class="small">Bandeau rouge</p>
+    <tbp-strip-red href="#" class="sg-row">
+      <span><b>14.11.2026</b> Gala du Peuple VIII</span>
+      <span>Gymnase municipal, Vigneux-sur-Seine</span>
+    </tbp-strip-red>
+
+    <p class="small">Face-à-face</p>
+    <div class="sg-row">
+      <tbp-faceoff
+        image="assets/images/combat.webp"
+        imageAlt="Échange de coups"
+        redName="Chadi Baraia"
+        redRecord="7-0-1"
+        category="Super-welters"
+      />
+    </div>
+
+    <p class="small">Compte à rebours</p>
+    <div class="sg-row">
+      <tbp-countdown [target]="countdownTarget" />
+    </div>
+
+    <p class="small">Chiffres clés</p>
+    <div class="sg-row">
+      <tbp-stats [items]="statsItems" />
+    </div>
+
+    <p class="small">Fiche technique</p>
+    <div class="sg-form-demo sg-row">
+      <tbp-specs [rows]="specRows" />
+    </div>
+
+    <p class="small">Carte des combats</p>
+    <div class="sg-row">
+      <tbp-fight-card [fights]="fights" />
+    </div>
+
+    <p class="small">Onglets</p>
+    <div class="sg-row">
+      <tbp-tabs [tabs]="tabs" [activeId]="activeTab" (selected)="activeTab = $event" />
+    </div>
+
+    <p class="small">Barre de billetterie fixe (mobile)</p>
+    <div class="sg-row">
+      <tbp-ticket-bar
+        href="#"
+        title="Gala du Peuple VIII"
+        subtitle="14 novembre · Vigneux-sur-Seine"
+        [visible]="true"
+      />
+    </div>
+  </section>
+
+  <section class="sg-section">
+    <p class="label">10</p>
+    <h2 class="h2">Cartes et listes</h2>
+
+    <p class="small">Carte combattant</p>
+    <div class="sg-row" style="max-width: 320px">
+      <tbp-fighter-card
+        href="#"
+        firstName="Chadi"
+        fullName="Chadi Baraia"
+        category="Super-welters"
+        image="assets/images/chadi-cut-2.webp"
+        [wins]="7"
+        [losses]="0"
+        [draws]="1"
+      />
+    </div>
+
+    <p class="small">Liste des galas</p>
+    <div class="sg-row">
+      <tbp-event-row
+        href="#"
+        posterImage="assets/images/ring-face.webp"
+        date="07.02.2026"
+        title="Gala du Peuple VII"
+        place="Vigneux-sur-Seine"
+      />
+    </div>
+
+    <p class="small">Mosaïque « Dans le ring »</p>
+    <div class="sg-row">
+      <tbp-mosaic [images]="mosaicImages" />
+    </div>
+
+    <p class="small">Galerie</p>
+    <div class="sg-row">
+      <tbp-gallery [images]="galleryImages" />
+    </div>
+
+    <p class="small">État vide</p>
+    <div class="sg-row">
+      <tbp-empty-state
+        title="Le roster s'agrandit."
+        description="De nouveaux boxeurs rejoindront bientôt l'écurie."
+      />
+    </div>
+
+    <p class="small">Frise du parcours</p>
+    <div class="sg-row">
+      <tbp-timeline [items]="timelineItems" />
+    </div>
+
+    <p class="small">Cartes news et produit</p>
+    <div class="grid grid--2 sg-row" style="max-width: 640px">
+      <tbp-news-card
+        href="#"
+        image="assets/images/combat.webp"
+        date="12.09.2026"
+        title="Annonce du Gala du Peuple VIII"
+        excerpt="Le prochain gala aura lieu le 14 novembre 2026."
+      />
+      <tbp-product-card
+        image="assets/images/produit-tshirt.webp"
+        name="T-shirt TBP"
+        price="30 €"
+        buyHref="#"
+      />
+    </div>
+  </section>
+</main>

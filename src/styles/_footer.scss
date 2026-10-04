@@ -1,0 +1,91 @@
+// Pied de page (DS section 10).
+.footer {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink);
+  border-top: 1px solid var(--line);
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
+  gap: 32px;
+  padding-block: 56px;
+}
+
+.footer__logo {
+  display: block;
+  width: 118px;
+  color: var(--paper);
+  margin-bottom: 18px;
+}
+
+.footer h4 {
+  margin-bottom: 16px;
+  font: 700 10.5px var(--sans);
+  font-stretch: 125%;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.footer ul {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.footer ul a {
+  color: var(--muted);
+  transition: color var(--t);
+}
+
+.footer ul a:hover {
+  color: var(--paper);
+}
+
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-block: 20px calc(20px + var(--safe-b));
+  border-top: 1px solid var(--line);
+  font: 700 10.5px var(--sans);
+  font-stretch: 125%;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.footer__bottom nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer__bottom a:hover {
+  color: var(--paper);
+}
+
+.socials {
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 1180px) {
+  .footer__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .footer__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+  }
+
+  .footer__grid > div:first-child {
+    grid-column: 1 / -1;
+  }
+}

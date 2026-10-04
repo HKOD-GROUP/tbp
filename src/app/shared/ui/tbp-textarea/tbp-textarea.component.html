@@ -1,0 +1,21 @@
+<div [class]="classes()">
+  <textarea
+    class="field__input"
+    [id]="id"
+    [placeholder]="placeholder()"
+    [attr.maxlength]="maxLength() ?? null"
+    [disabled]="disabled()"
+    [attr.aria-invalid]="hasError() ? 'true' : null"
+    (input)="handleInput($any($event.target).value)"
+    (blur)="handleBlur()"
+    >{{ value() }}</textarea>
+  <label class="field__label" [for]="id">{{ label() }}</label>
+  @if (maxLength(); as max) {
+    <span class="field__count">{{ value().length }}/{{ max }}</span>
+  }
+</div>
+@if (hasError()) {
+  <p class="field__help field__help--error">{{ errorMessage() }}</p>
+} @else if (hint()) {
+  <p class="field__help">{{ hint() }}</p>
+}

@@ -1,0 +1,21 @@
+<div [class]="classes()">
+  <input
+    class="field__input"
+    [id]="id"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [autocomplete]="autocomplete()"
+    [disabled]="disabled()"
+    [value]="value()"
+    [attr.aria-invalid]="hasError() ? 'true' : null"
+    [attr.aria-describedby]="hint() || errorMessage() ? id + '-help' : null"
+    (input)="handleInput($any($event.target).value)"
+    (blur)="handleBlur()"
+  />
+  <label class="field__label" [for]="id">{{ label() }}</label>
+</div>
+@if (hasError()) {
+  <p class="field__help field__help--error" [id]="id + '-help'">{{ errorMessage() }}</p>
+} @else if (hint()) {
+  <p class="field__help" [id]="id + '-help'">{{ hint() }}</p>
+}

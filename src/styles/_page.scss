@@ -1,0 +1,233 @@
+// En-tête de page, grilles, onglets, sous-navigation (DS sections 8 et 10).
+.phead {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: min(78vh, 760px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.phead > .media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 0;
+}
+
+.phead > .media .photo {
+  animation: slowzoom 24s var(--ease) both;
+}
+
+.phead > .media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    0deg,
+    var(--ink) 2%,
+    rgba(8, 8, 8, 0.55) 45%,
+    rgba(8, 8, 8, 0.35) 100%
+  );
+}
+
+.phead__in {
+  width: 100%;
+  display: grid;
+  gap: 20px;
+  padding-top: calc(var(--nav-h) + 72px);
+  padding-bottom: clamp(44px, 6vw, 80px);
+}
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(40px, 6vw, 100px);
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+  gap: clamp(14px, 1.8vw, 24px);
+}
+
+.grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+// Bandeau d'appel à la newsletter (accueil uniquement).
+.cta-band {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: end;
+}
+
+.values {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.8vw, 20px);
+}
+
+// Carte crédo : panneau en verre (esprit lockir) + empreinte fantôme du mot
+// géant du hero, rejouée en petit derrière le titre.
+.value {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: clamp(30px, 3.4vw, 38px) clamp(26px, 2.8vw, 30px) 26px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--r-lg);
+  box-shadow:
+    inset 0 3px 0 var(--red),
+    inset 0 0 0 1px var(--line);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow: hidden;
+  isolation: isolate;
+  transition: border-color var(--t);
+}
+
+.value__mark {
+  position: absolute;
+  top: -0.12em;
+  right: 2px;
+  z-index: -1;
+  font: 900 clamp(84px, 9vw, 128px) / 1 var(--sans);
+  font-stretch: 125%;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--line-2);
+  pointer-events: none;
+  user-select: none;
+}
+
+.value h3 {
+  font: 640 19px / 1.2 var(--sans);
+  font-stretch: 95%;
+}
+
+.value p {
+  color: var(--muted);
+  max-width: 26ch;
+}
+
+.quote {
+  font: 640 clamp(26px, 3vw, 42px) / 1.2 var(--sans);
+  font-stretch: 90%;
+  letter-spacing: -0.005em;
+  max-width: 18ch;
+}
+
+// Sous-navigation collante.
+.subnav {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 80;
+  background: rgba(8, 8, 8, 0.92);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--line);
+}
+
+.subnav__in {
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.subnav__title {
+  font: 640 18px / 1.2 var(--sans);
+  font-stretch: 95%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subnav__links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.subnav__links a:not(.btn) {
+  font: 700 11px var(--sans);
+  font-stretch: 125%;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.subnav__links a:not(.btn):hover {
+  color: var(--paper);
+}
+
+// Onglets.
+.tabs {
+  display: flex;
+  gap: 26px;
+  border-bottom: 1px solid var(--line);
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tabs button {
+  position: relative;
+  height: 46px;
+  font: 700 11.5px var(--sans);
+  font-stretch: 125%;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+  white-space: nowrap;
+  transition: color var(--t);
+}
+
+.tabs button:hover {
+  color: var(--muted);
+}
+
+.tabs [aria-selected='true'] {
+  color: var(--paper);
+}
+
+.tabs [aria-selected='true']::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--red);
+}
+
+@media (max-width: 640px) {
+  .subnav__links a:not(.btn) {
+    display: none;
+  }
+
+  .values {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 1060px) {
+  .cta-band {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

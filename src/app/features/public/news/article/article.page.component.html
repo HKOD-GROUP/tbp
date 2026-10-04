@@ -1,0 +1,21 @@
+@if (article(); as a) {
+  <section class="section wrap wrap--text">
+    <p class="eyebrow">{{ a.publishedAt | date: 'dd.MM.yyyy' }}</p>
+    <h1 class="h1">{{ a.title }}</h1>
+
+    <div class="media r-16x9" style="margin: 32px 0">
+      <img class="photo" [ngSrc]="a.coverUrl" [alt]="a.title" fill priority />
+    </div>
+
+    <div class="small" [innerHTML]="a.content"></div>
+
+    <div class="actions" style="margin-top: 40px">
+      <button type="button" class="link" (click)="share()">
+        {{ linkCopied ? 'Lien copié !' : 'Partager' }}
+      </button>
+      @if (linkedEvent(); as linked) {
+        <a class="link link--plain" [routerLink]="'/evenements/' + linked.slug">Voir l'événement</a>
+      }
+    </div>
+  </section>
+}

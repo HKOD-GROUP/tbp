@@ -1,0 +1,63 @@
+<div class="adm">
+  <aside class="adm-side" aria-label="Navigation de l'admin">
+    <span class="adm-side__logo"><tbp-logo /></span>
+    <nav class="adm-nav">
+      <button type="button" [attr.aria-current]="activeTab() === 'galas' ? 'true' : null" (click)="setTab('galas')">
+        <tbp-icon name="events" />Galas<span class="count">{{ events.all().length }}</span>
+      </button>
+      <button type="button" [attr.aria-current]="activeTab() === 'news' ? 'true' : null" (click)="setTab('news')">
+        <tbp-icon name="news" />News<span class="count">{{ news.all().length }}</span>
+      </button>
+      <button type="button" [attr.aria-current]="activeTab() === 'shop' ? 'true' : null" (click)="setTab('shop')">
+        <tbp-icon name="bag" />Boutique<span class="count">{{ products.all().length }}</span>
+      </button>
+      <button type="button" [attr.aria-current]="activeTab() === 'msg' ? 'true' : null" (click)="setTab('msg')">
+        <tbp-icon name="mail" />Messages<span class="count">{{ messages.messages().length }}</span>
+      </button>
+    </nav>
+    <div class="adm-side__foot">
+      <div class="adm-user"><span class="avatar">{{ avatarInitials }}</span><span>{{ adminEmail }}</span></div>
+      <nav class="adm-nav">
+        <a routerLink="/"><tbp-icon name="eye" />Voir le site</a>
+        <button type="button" (click)="signOut()"><tbp-icon name="logout" />Se déconnecter</button>
+      </nav>
+    </div>
+  </aside>
+
+  <div style="min-width: 0">
+    <header class="adm-top">
+      <span class="adm-top__logo"><tbp-logo /></span>
+      <div class="adm-top__right">
+        <a class="icon-btn icon-btn--sm" routerLink="/" aria-label="Voir le site"><tbp-icon name="eye" /></a>
+        <button class="avatar" type="button" (click)="signOut()" aria-label="Se déconnecter">{{ avatarInitials }}</button>
+      </div>
+    </header>
+    <main class="adm-main">
+      <div class="adm-main__in">
+        <tbp-admin-events-pane [class.tabpane]="true" [class.is-on]="activeTab() === 'galas'" />
+        <tbp-admin-news-pane [class.tabpane]="true" [class.is-on]="activeTab() === 'news'" />
+        <tbp-admin-shop-pane [class.tabpane]="true" [class.is-on]="activeTab() === 'shop'" />
+        <tbp-admin-messages-pane [class.tabpane]="true" [class.is-on]="activeTab() === 'msg'" />
+      </div>
+    </main>
+  </div>
+</div>
+
+<button class="fab" type="button" (click)="openFab()" aria-label="Ajouter">
+  <tbp-icon name="plus" />
+</button>
+
+<nav class="adm-tabbar" aria-label="Sections de l'admin">
+  <button type="button" [attr.aria-current]="activeTab() === 'galas' ? 'true' : null" (click)="setTab('galas')">
+    <tbp-icon name="events" />Galas
+  </button>
+  <button type="button" [attr.aria-current]="activeTab() === 'news' ? 'true' : null" (click)="setTab('news')">
+    <tbp-icon name="news" />News
+  </button>
+  <button type="button" [attr.aria-current]="activeTab() === 'shop' ? 'true' : null" (click)="setTab('shop')">
+    <tbp-icon name="bag" />Boutique
+  </button>
+  <button type="button" [attr.aria-current]="activeTab() === 'msg' ? 'true' : null" (click)="setTab('msg')">
+    <tbp-icon name="mail" />Messages
+  </button>
+</nav>

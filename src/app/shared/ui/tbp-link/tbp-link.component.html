@@ -1,0 +1,24 @@
+@if (to(); as rl) {
+  <a [class]="classes()" [routerLink]="rl" [attr.target]="target() ?? null" [attr.rel]="rel() ?? null">
+    <ng-container [ngTemplateOutlet]="content" />
+  </a>
+} @else {
+  <a
+    [class]="classes()"
+    [href]="href() ?? null"
+    [attr.target]="target() ?? null"
+    [attr.rel]="rel() ?? null"
+  >
+    <ng-container [ngTemplateOutlet]="content" />
+  </a>
+}
+
+<ng-template #content>
+  @if (variant() === 'back') {
+    <tbp-icon [name]="iconName()" [size]="15" />
+  }
+  <ng-content />
+  @if (variant() !== 'back') {
+    <tbp-icon [name]="iconName()" [size]="15" />
+  }
+</ng-template>

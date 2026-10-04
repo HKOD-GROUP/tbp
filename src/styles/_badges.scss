@@ -1,0 +1,54 @@
+// Badges (DS section 5).
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 26px;
+  padding: 0 12px;
+  border-radius: var(--r-full);
+  font: 700 10.5px / 1 var(--sans);
+  font-stretch: 125%;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: var(--ink-4);
+  color: var(--paper);
+}
+
+.badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+}
+
+.badge--amber,
+.badge--red {
+  background: var(--red);
+  color: #fff;
+}
+
+.badge--muted {
+  color: var(--muted);
+}
+
+.badge--ok {
+  background: rgba(61, 220, 132, 0.12);
+  color: var(--ok);
+}
+
+.badge--danger {
+  background: var(--red-soft);
+  color: #ff6a73;
+}
+
+.badge--live::before {
+  border-radius: 50%;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.25;
+  }
+}

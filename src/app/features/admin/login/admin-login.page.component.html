@@ -1,0 +1,30 @@
+<div class="auth">
+  <div class="media" aria-hidden="true">
+    <img class="photo" ngSrc="assets/images/ring-entree.webp" alt="" fill priority />
+  </div>
+  <tbp-link class="auth__back" variant="back" href="/">Retour au site</tbp-link>
+  <form class="auth__box" [formGroup]="form" (ngSubmit)="submit()">
+    <span class="auth__logo"><tbp-logo /></span>
+    <h1 class="h2 auth__title">Espace <span class="it">admin.</span></h1>
+    <p class="small">Entre le mot de passe pour gérer les galas, les news et la boutique.</p>
+
+    <tbp-field
+      label="Mot de passe"
+      type="password"
+      autocomplete="current-password"
+      placeholder="••••••••"
+      formControlName="password"
+      [errorMessage]="form.controls.password.invalid ? 'Mot de passe requis.' : undefined"
+    />
+
+    @if (error()) {
+      <tbp-alert variant="error" title="Mot de passe incorrect.">
+        Vérifie le mot de passe et réessaie.
+      </tbp-alert>
+    }
+
+    <tbp-button type="submit" variant="primary" [block]="true" size="lg" [loading]="loading()">
+      Se connecter
+    </tbp-button>
+  </form>
+</div>

@@ -1,0 +1,77 @@
+// Éditeur de texte riche (ngx-quill), habillé aux couleurs du DS (section 6, `.rte`).
+.rte {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--ink-3);
+  overflow: hidden;
+}
+
+.rte .ql-toolbar.ql-snow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 6px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--sans);
+}
+
+.rte .ql-toolbar.ql-snow .ql-formats {
+  margin-right: 6px;
+}
+
+.rte .ql-toolbar.ql-snow button {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-xs);
+  color: var(--muted);
+}
+
+.rte .ql-toolbar.ql-snow button:hover,
+.rte .ql-toolbar.ql-snow button.ql-active {
+  background: var(--ink-4);
+  color: var(--paper);
+}
+
+.rte .ql-toolbar.ql-snow button .ql-stroke {
+  stroke: currentColor;
+}
+
+.rte .ql-toolbar.ql-snow button .ql-fill {
+  fill: currentColor;
+}
+
+.rte .ql-container.ql-snow {
+  border: 0;
+  font-family: var(--sans);
+}
+
+.rte .ql-editor {
+  min-height: 170px;
+  padding: 16px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--paper);
+}
+
+.rte .ql-editor.ql-blank::before {
+  color: var(--dim);
+  font-style: normal;
+}
+
+.rte .ql-snow .ql-picker {
+  color: var(--muted);
+}
+
+.rte .ql-snow .ql-tooltip {
+  background: var(--ink-4);
+  border: 1px solid var(--line-2);
+  color: var(--paper);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.rte .ql-snow .ql-tooltip input[type='text'] {
+  background: var(--ink-3);
+  border: 1px solid var(--line);
+  color: var(--paper);
+}
